@@ -1,8 +1,8 @@
 /** @format */
 
-import { Box, Button, Card, Container } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const Countries: FC = () => {
@@ -24,7 +24,7 @@ const Countries: FC = () => {
 			.catch(() => setCountryError(true))
 			.finally(() => setCountryLoading(false));
 	}
-
+	console.log(countriesData?.length);
 	return (
 		<div
 			style={{
@@ -36,7 +36,11 @@ const Countries: FC = () => {
 			}}
 		>
 			<div>
-				{countriesData?.length &&
+				{countryLoading ? (
+					<div>Loading...</div>
+				) : countryError ? (
+					<div>Something Went wrong!</div>
+				) : (
 					countriesData?.map((country) => {
 						return (
 							<div
@@ -68,7 +72,7 @@ const Countries: FC = () => {
 												height: 15,
 											}}
 										>
-											Name {"       "} : <h3> {country.name?.common}</h3>
+											Name {"       "} : <h3> {country?.name?.common}</h3>
 										</p>
 										<p
 											style={{
@@ -80,7 +84,7 @@ const Countries: FC = () => {
 										>
 											Capital {"     "}:{" "}
 											<h3>
-												{"  "} {country.capital[0]}
+												{"  "} {country?.capital?.[0]}
 											</h3>
 										</p>
 										<p
@@ -91,7 +95,7 @@ const Countries: FC = () => {
 												height: 15,
 											}}
 										>
-											Population {"  "}: <h3>{country.population}</h3>
+											Population {"  "}: <h3>{country?.population}</h3>
 										</p>
 										<p
 											style={{
@@ -101,7 +105,7 @@ const Countries: FC = () => {
 												height: 15,
 											}}
 										>
-											Latitude {"    "}: <h3>{country.latlng[0]}</h3>
+											Latitude {"    "}: <h3>{country?.latlng?.[0]}</h3>
 										</p>
 										<p
 											style={{
@@ -111,7 +115,7 @@ const Countries: FC = () => {
 												height: 15,
 											}}
 										>
-											Longitude {"   "}: <h3>{country.latlng[1]}</h3>
+											Longitude {"   "}: <h3>{country?.latlng?.[1]}</h3>
 										</p>
 										<p
 											style={{
@@ -121,11 +125,11 @@ const Countries: FC = () => {
 												height: 15,
 											}}
 										>
-											Image URL {"   "}: <h3>{country.flags.svg}</h3>
+											Image URL {"   "}: <h3>{country?.flags?.svg}</h3>
 										</p>
 									</div>
 									<img
-										src={country.flags.svg}
+										src={country?.flags?.svg}
 										alt={`${country.name?.common} flag ${country.flags[0]}`}
 										width={100}
 										height={100}
@@ -145,7 +149,8 @@ const Countries: FC = () => {
 								</Button>
 							</div>
 						);
-					})}
+					})
+				)}
 			</div>
 		</div>
 	);
