@@ -1,6 +1,6 @@
 /** @format */
 
-import { Button } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,11 @@ const Countries: FC = () => {
 	const [countriesData, setCountriesData] = useState<Record<string, any>[]>();
 	const [countryLoading, setCountryLoading] = useState<boolean>(true);
 	const [countryError, setCountryError] = useState<boolean>(false);
+
+	const [showModal, setShowModal] = useState<boolean>(false);
+	const [weatherData, setWeatherData] = useState<Record<string, any>>();
+	const [weatherLoading, setWeatherLoading] = useState<boolean>(true);
+	const [weatherError, setWeatherError] = useState<boolean>(false);
 
 	const location = useLocation();
 
@@ -24,7 +29,19 @@ const Countries: FC = () => {
 			.catch(() => setCountryError(true))
 			.finally(() => setCountryLoading(false));
 	}
-	console.log(countriesData?.length);
+
+	function getWeather(capital: string) {
+		setWeatherLoading(true);
+		setShowModal(true);
+		axios
+			.get(
+				`http://api.weatherstack.com/current?access_key=9cfe09f6522f28c80de18d51c2880bf4&query=${capital}`
+			)
+			.then((res) => setWeatherData(res.data))
+			.catch(() => setWeatherError(true))
+			.finally(() => setWeatherLoading(false));
+	}
+
 	return (
 		<div
 			style={{
@@ -35,6 +52,59 @@ const Countries: FC = () => {
 				padding: 10,
 			}}
 		>
+			<Modal open={showModal} onClose={() => setShowModal(false)}>
+				<Box
+					sx={{
+						// height: window.innerHeight * 0.2,
+						// width: window.innerWidth * 0.8,
+						display: "flex",
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						// width: 400,
+						bgcolor: "background.paper",
+						border: "2px solid #000",
+						boxShadow: 24,
+						p: 4,
+					}}
+				>
+					{weatherLoading ? (
+						<Typography>Loading...</Typography>
+					) : weatherError ? (
+						<Typography>Something went wrong!</Typography>
+					) : (
+						<div
+							style={{
+								flexDirection: "column",
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="h5">Weather</Typography>
+							<img
+								src={weatherData?.current?.weather_icons?.[0]}
+								alt={"weather"}
+								style={{
+									marginTop: 15,
+									margin: 5,
+								}}
+							/>
+							<Typography sx={{ mt: 2 }}>
+								Temperature : {weatherData?.current?.temperature} °C
+							</Typography>
+							<Typography sx={{ mt: 2 }}>
+								WindSpeed : {weatherData?.current?.wind_speed} km/hr
+							</Typography>
+							<Typography sx={{ mt: 2, mb: 3 }}>
+								Precip : {weatherData?.current?.precip} %
+							</Typography>
+							<Button onClick={() => setShowModal(false)}>OK</Button>
+						</div>
+					)}
+				</Box>
+			</Modal>
 			<div>
 				{countryLoading ? (
 					<div>Loading...</div>
@@ -143,6 +213,9 @@ const Countries: FC = () => {
 
 										backgroundColor: "blue",
 										padding: 10,
+									}}
+									onClick={() => {
+										getWeather(country?.capital?.[0]);
 									}}
 								>
 									Capital Weather
