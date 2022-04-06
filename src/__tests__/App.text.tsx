@@ -7,4 +7,9 @@ describe("App", () => {
 	it("renders", () => {
 		render(<App />);
 	});
+
+	it("matches snapshot", () => {
+		const view = render(<App />);
+		expect(view).toMatchSnapshot();
+	});
 });
