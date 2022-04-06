@@ -28,6 +28,7 @@ const Home: FC = () => {
 				onChange={(e) => setText(e.target.value)}
 			/>
 			<Button
+				disabled={!text?.length}
 				style={{
 					marginTop: 10,
 					backgroundColor: "rgba(0,150,255,.9)",
