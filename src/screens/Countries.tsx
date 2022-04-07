@@ -17,19 +17,24 @@ import {
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import { muiStyles, styles } from "../styles/screens";
+import { countryType, weatherType } from "../types/responses";
+import { LocationStateType } from "../types/router";
 
 const Countries: FC = () => {
-	const [countriesData, setCountriesData] = useState<Record<string, any>[]>();
+	const [countriesData, setCountriesData] = useState<countryType[]>();
 	const [countryLoading, setCountryLoading] = useState<boolean>(true);
 	const [countryError, setCountryError] = useState<boolean>(false);
 
 	const [showModal, setShowModal] = useState<boolean>(false);
-	const [weatherData, setWeatherData] = useState<Record<string, any>>();
+	const [weatherData, setWeatherData] = useState<weatherType>();
 	const [weatherLoading, setWeatherLoading] = useState<boolean>(true);
 	const [weatherError, setWeatherError] = useState<boolean>(false);
 
 	const location = useLocation();
+
+	const { country } = location?.state as LocationStateType;
 
 	useEffect(() => {
 		getCountryData();
@@ -39,7 +44,7 @@ const Countries: FC = () => {
 	function getCountryData() {
 		setCountryLoading(true);
 		axios //@ts-ignore
-			.get(`https://restcountries.com/v3.1/name/${location?.state?.country}`)
+			.get(`https://restcountries.com/v3.1/name/${country}`)
 			.then((res) => setCountriesData(res.data))
 			.catch(() => setCountryError(true))
 			.finally(() => setCountryLoading(false));
@@ -135,6 +140,7 @@ const Countries: FC = () => {
 					</Typography>
 				) : (
 					countriesData?.map((country) => {
+						const { name, capital, population, latlng, flags } = country;
 						return (
 							<CardContent style={styles.card}>
 								<Container
@@ -155,7 +161,7 @@ const Countries: FC = () => {
 												<TableCell>:</TableCell>
 												<TableCell>
 													<Typography textAlign={"left"}>
-														{country?.name?.common}
+														{name?.common}
 													</Typography>
 												</TableCell>
 											</TableRow>
@@ -167,7 +173,7 @@ const Countries: FC = () => {
 												<TableCell>:</TableCell>
 												<TableCell>
 													<Typography textAlign={"left"}>
-														{country?.capital?.[0]}
+														{capital?.[0]}
 													</Typography>
 												</TableCell>
 											</TableRow>
@@ -179,7 +185,7 @@ const Countries: FC = () => {
 												<TableCell>:</TableCell>
 												<TableCell>
 													<Typography textAlign={"left"}>
-														{country?.population}
+														{population}
 													</Typography>
 												</TableCell>
 											</TableRow>
@@ -191,7 +197,7 @@ const Countries: FC = () => {
 												<TableCell>:</TableCell>
 												<TableCell>
 													<Typography textAlign={"left"}>
-														{country?.latlng?.[0]}
+														{latlng?.[0]}
 													</Typography>
 												</TableCell>
 											</TableRow>
@@ -203,7 +209,7 @@ const Countries: FC = () => {
 												<TableCell>:</TableCell>
 												<TableCell>
 													<Typography textAlign={"left"}>
-														{country?.latlng?.[1]}
+														{latlng?.[1]}
 													</Typography>
 												</TableCell>
 											</TableRow>
@@ -214,24 +220,22 @@ const Countries: FC = () => {
 												</TableCell>
 												<TableCell>:</TableCell>
 												<TableCell>
-													<a href={country?.flags?.svg}>
-														{country?.flags?.svg}
-													</a>
+													<a href={flags?.svg}>{flags?.svg}</a>
 												</TableCell>
 											</TableRow>
 										</TableBody>
 									</Table>
 
 									<img
-										src={country?.flags?.svg}
-										alt={`${country.name?.common} flag ${country.flags[0]}`}
+										src={flags?.svg}
+										alt={`${name?.common} flag ${flags?.svg}`}
 										width={200}
 									/>
 								</Container>
 								<Button
 									style={styles.weatherBtn}
 									onClick={() => {
-										getWeather(country?.capital?.[0]);
+										getWeather(capital?.[0]);
 									}}
 								>
 									Capital Weather
