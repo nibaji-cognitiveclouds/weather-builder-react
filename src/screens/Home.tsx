@@ -1,8 +1,9 @@
 /** @format */
 
-import { Button, Card, Container, TextField } from "@mui/material";
+import { Button, Container, TextField } from "@mui/material";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { styles } from "../styles/screens";
 
 const Home: FC = () => {
 	const [text, setText] = useState("");
@@ -10,17 +11,7 @@ const Home: FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div
-			style={{
-				padding: 10,
-				justifyContent: "center",
-				alignItems: "center",
-				height: window.innerHeight,
-				// width: window.innerHeight,
-				flexDirection: "column",
-				display: "flex",
-			}}
-		>
+		<Container style={styles.container}>
 			<TextField
 				id="outlined-basic"
 				label="Enter Country name"
@@ -29,11 +20,7 @@ const Home: FC = () => {
 			/>
 			<Button
 				disabled={!text?.length}
-				style={{
-					marginTop: 10,
-					backgroundColor: "rgba(0,150,255,.9)",
-					borderRadius: 50,
-				}}
+				style={styles.submitBtn}
 				onClick={() => {
 					navigate(`/details/`, {
 						state: {
@@ -44,7 +31,7 @@ const Home: FC = () => {
 			>
 				🔎
 			</Button>
-		</div>
+		</Container>
 	);
 };
 

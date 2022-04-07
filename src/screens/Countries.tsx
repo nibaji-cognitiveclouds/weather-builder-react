@@ -1,9 +1,23 @@
 /** @format */
 
-import { Box, Button, Modal, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	CardContent,
+	CircularProgress,
+	Container,
+	Modal,
+	Stack,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	Typography,
+} from "@mui/material";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { muiStyles, styles } from "../styles/screens";
 
 const Countries: FC = () => {
 	const [countriesData, setCountriesData] = useState<Record<string, any>[]>();
@@ -19,6 +33,7 @@ const Countries: FC = () => {
 
 	useEffect(() => {
 		getCountryData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	function getCountryData() {
@@ -43,202 +58,190 @@ const Countries: FC = () => {
 	}
 
 	return (
-		<div>
-			<Button
-				style={{
-					top: 10,
-					left: 10,
-				}}
-				onClick={() => window.history.back()}
-			>
-				Back
-			</Button>
-			<div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					flexDirection: "column",
-					height: window.innerHeight,
-					padding: 10,
-				}}
-			>
-				<Modal open={showModal} onClose={() => setShowModal(false)}>
-					<Box
-						sx={{
-							// height: window.innerHeight * 0.2,
-							// width: window.innerWidth * 0.8,
-							display: "flex",
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							// width: 400,
-							bgcolor: "background.paper",
-							border: "2px solid #000",
-							boxShadow: 24,
-							p: 4,
-						}}
-					>
-						{weatherLoading ? (
-							<Typography>Loading...</Typography>
-						) : weatherError ? (
-							<Typography>Something went wrong!</Typography>
-						) : (
-							<div
-								style={{
-									flexDirection: "column",
-									display: "flex",
-									justifyContent: "center",
-									alignItems: "center",
-								}}
-							>
-								<Typography variant="h5">Weather</Typography>
-								<img
-									src={weatherData?.current?.weather_icons?.[0]}
-									alt={"weather"}
-									style={{
-										marginTop: 15,
-										margin: 5,
-									}}
-								/>
-								<Typography sx={{ mt: 2 }}>
-									Temperature : {weatherData?.current?.temperature} °C
-								</Typography>
-								<Typography sx={{ mt: 2 }}>
-									WindSpeed : {weatherData?.current?.wind_speed} km/hr
-								</Typography>
-								<Typography sx={{ mt: 2, mb: 3 }}>
-									Precip : {weatherData?.current?.precip} %
-								</Typography>
-								<Button onClick={() => setShowModal(false)}>OK</Button>
-							</div>
-						)}
-					</Box>
-				</Modal>
-				<div>
-					{countryLoading ? (
-						<div>Loading...</div>
-					) : countryError ? (
-						<div>
-							Something Went wrong. Go back and enter proper country name!
-						</div>
+		<Container style={styles.container2}>
+			<div style={{ margin: 20 }}>
+				<Button style={styles.backBtn} onClick={() => window.history.back()}>
+					{"< Back"}
+				</Button>
+			</div>
+
+			<Modal open={showModal} onClose={() => setShowModal(false)}>
+				<Box sx={muiStyles.modal}>
+					{weatherLoading ? (
+						<CircularProgress />
+					) : weatherError ? (
+						<Typography>Something went wrong!</Typography>
 					) : (
-						countriesData?.map((country) => {
-							return (
-								<div
+						<Stack
+							style={{
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="h5">Weather</Typography>
+							<img
+								src={weatherData?.current?.weather_icons?.[0]}
+								alt={"weather"}
+								style={styles.img}
+							/>
+							<Table>
+								<TableBody>
+									<TableRow>
+										<TableCell>
+											<Typography textAlign={"right"}>Temperature</Typography>
+										</TableCell>
+										<TableCell>:</TableCell>
+										<TableCell>
+											<Typography>
+												{weatherData?.current?.temperature} °C
+											</Typography>
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell>
+											<Typography textAlign={"right"}>WindSpeed</Typography>
+										</TableCell>
+										<TableCell>:</TableCell>
+										<TableCell>
+											<Typography>
+												{weatherData?.current?.wind_speed} km/hr
+											</Typography>
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell>
+											<Typography textAlign={"right"}>Precip</Typography>
+										</TableCell>
+										<TableCell>:</TableCell>
+										<TableCell>
+											<Typography>{weatherData?.current?.precip} %</Typography>
+										</TableCell>
+									</TableRow>
+								</TableBody>
+							</Table>
+							<Button onClick={() => setShowModal(false)} style={styles.okBtn}>
+								Ok
+							</Button>
+						</Stack>
+					)}
+				</Box>
+			</Modal>
+
+			<Container style={styles.container2}>
+				{countryLoading ? (
+					<CircularProgress style={styles.progressAndError} />
+				) : countryError ? (
+					<Typography style={styles.progressAndError}>
+						Something Went wrong. Go back and enter proper country name!
+					</Typography>
+				) : (
+					countriesData?.map((country) => {
+						return (
+							<CardContent style={styles.card}>
+								<Container
 									style={{
-										// minWidth: window.innerWidth * 0.4,
-										margin: 10,
-										padding: 20,
-										borderRadius: 20,
-										boxShadow: "0px 0px 10px rgba(0,0,0,.5)",
+										flexDirection: "row",
+										justifyContent: "space-around",
 										alignItems: "center",
-										flexDirection: "column",
 										display: "flex",
+										marginBottom: 15,
 									}}
 								>
-									<div
-										style={{
-											flexDirection: "row",
-											justifyContent: "space-around",
-											alignItems: "center",
-											display: "flex",
-										}}
-									>
-										<div style={{ margin: 10 }}>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Name {"       "} : <h3> {country?.name?.common}</h3>
-											</p>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Capital {"     "}:{" "}
-												<h3>
-													{"  "} {country?.capital?.[0]}
-												</h3>
-											</p>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Population {"  "}: <h3>{country?.population}</h3>
-											</p>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Latitude {"    "}: <h3>{country?.latlng?.[0]}</h3>
-											</p>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Longitude {"   "}: <h3>{country?.latlng?.[1]}</h3>
-											</p>
-											<p
-												style={{
-													flexDirection: "row",
-													alignItems: "center",
-													display: "flex",
-													height: 15,
-												}}
-											>
-												Image URL {"   "}: <h3>{country?.flags?.svg}</h3>
-											</p>
-										</div>
-										<img
-											src={country?.flags?.svg}
-											alt={`${country.name?.common} flag ${country.flags[0]}`}
-											width={100}
-											height={100}
-											style={{ width: 150, height: 100 }}
-										/>
-									</div>
-									<Button
-										style={{
-											color: "white",
-											borderRadius: 10,
+									<Table sx={{ marginRight: 5 }}>
+										<TableBody>
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Name</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<Typography textAlign={"left"}>
+														{country?.name?.common}
+													</Typography>
+												</TableCell>
+											</TableRow>
 
-											backgroundColor: "blue",
-											padding: 10,
-										}}
-										onClick={() => {
-											getWeather(country?.capital?.[0]);
-										}}
-									>
-										Capital Weather
-									</Button>
-								</div>
-							);
-						})
-					)}
-				</div>
-			</div>
-		</div>
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Capital</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<Typography textAlign={"left"}>
+														{country?.capital?.[0]}
+													</Typography>
+												</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Population</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<Typography textAlign={"left"}>
+														{country?.population}
+													</Typography>
+												</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Latitude</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<Typography textAlign={"left"}>
+														{country?.latlng?.[0]}
+													</Typography>
+												</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Longitude</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<Typography textAlign={"left"}>
+														{country?.latlng?.[1]}
+													</Typography>
+												</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>
+													<Typography textAlign={"left"}>Image URL</Typography>
+												</TableCell>
+												<TableCell>:</TableCell>
+												<TableCell>
+													<a href={country?.flags?.svg}>
+														{country?.flags?.svg}
+													</a>
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
+									<img
+										src={country?.flags?.svg}
+										alt={`${country.name?.common} flag ${country.flags[0]}`}
+										width={200}
+									/>
+								</Container>
+								<Button
+									style={styles.weatherBtn}
+									onClick={() => {
+										getWeather(country?.capital?.[0]);
+									}}
+								>
+									Capital Weather
+								</Button>
+							</CardContent>
+						);
+					})
+				)}
+			</Container>
+		</Container>
 	);
 };
 
