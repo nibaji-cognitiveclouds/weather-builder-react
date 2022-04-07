@@ -6,6 +6,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
+        class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
         style="padding: 10px; justify-content: center; align-items: center; height: 768px; flex-direction: column; display: flex;"
       >
         <div
@@ -57,6 +58,7 @@ Object {
   </body>,
   "container": <div>
     <div
+      class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
       style="padding: 10px; justify-content: center; align-items: center; height: 768px; flex-direction: column; display: flex;"
     >
       <div
