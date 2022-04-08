@@ -53,6 +53,7 @@ export const styles: Record<string, React.CSSProperties> = {
 		boxShadow: "0px 0px 10px rgba(0,0,0,.2)",
 		alignItems: "center",
 		flexDirection: "column",
+		justifyContent: "center",
 		display: "flex",
 	},
 	weatherBtn: {
@@ -60,6 +61,11 @@ export const styles: Record<string, React.CSSProperties> = {
 		borderRadius: 10,
 		backgroundColor: "rgba(0,150,255,.9)",
 		padding: 10,
+	},
+	link: {
+		wordBreak: "break-word",
+		maxWidth: 100,
+		textDecorationLine: "underline",
 	},
 };
 

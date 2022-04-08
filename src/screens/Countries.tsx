@@ -143,95 +143,93 @@ const Countries: FC = () => {
 						const { name, capital, population, latlng, flags } = country;
 						return (
 							<CardContent style={styles.card}>
-								<Container
-									style={{
-										flexDirection: "row",
-										justifyContent: "space-around",
-										alignItems: "center",
-										display: "flex",
-										marginBottom: 15,
-									}}
-								>
-									<Table sx={{ marginRight: 5 }}>
-										<TableBody>
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Name</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<Typography textAlign={"left"}>
-														{name?.common}
-													</Typography>
-												</TableCell>
-											</TableRow>
+								<img
+									src={flags?.svg}
+									alt={`${name?.common} flag ${flags?.svg}`}
+									width={200}
+								/>
 
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Capital</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<Typography textAlign={"left"}>
-														{capital?.[0]}
-													</Typography>
-												</TableCell>
-											</TableRow>
+								<Table sx={{ marginY: 5 }}>
+									<TableBody>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Name</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography textAlign={"left"}>
+													{name?.common}
+												</Typography>
+											</TableCell>
+										</TableRow>
 
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Population</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<Typography textAlign={"left"}>
-														{population}
-													</Typography>
-												</TableCell>
-											</TableRow>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Capital</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography textAlign={"left"}>
+													{capital?.[0]}
+												</Typography>
+											</TableCell>
+										</TableRow>
 
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Latitude</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<Typography textAlign={"left"}>
-														{latlng?.[0]}
-													</Typography>
-												</TableCell>
-											</TableRow>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Population</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography textAlign={"left"}>{population}</Typography>
+											</TableCell>
+										</TableRow>
 
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Longitude</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<Typography textAlign={"left"}>
-														{latlng?.[1]}
-													</Typography>
-												</TableCell>
-											</TableRow>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Latitude</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography textAlign={"left"}>
+													{latlng?.[0]}
+												</Typography>
+											</TableCell>
+										</TableRow>
 
-											<TableRow>
-												<TableCell>
-													<Typography textAlign={"left"}>Image URL</Typography>
-												</TableCell>
-												<TableCell>:</TableCell>
-												<TableCell>
-													<a href={flags?.svg}>{flags?.svg}</a>
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Longitude</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography textAlign={"left"}>
+													{latlng?.[1]}
+												</Typography>
+											</TableCell>
+										</TableRow>
 
-									<img
-										src={flags?.svg}
-										alt={`${name?.common} flag ${flags?.svg}`}
-										width={200}
-									/>
-								</Container>
+										<TableRow>
+											<TableCell>
+												<Typography textAlign={"right"}>Image URL</Typography>
+											</TableCell>
+											<TableCell>:</TableCell>
+											<TableCell>
+												<Typography
+													onClick={() => {
+														window.open(flags?.svg);
+													}}
+													textAlign={"left"}
+													color="blue"
+													style={styles.link}
+												>
+													{flags?.svg}
+												</Typography>
+											</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
+
 								<Button
 									style={styles.weatherBtn}
 									onClick={() => {
