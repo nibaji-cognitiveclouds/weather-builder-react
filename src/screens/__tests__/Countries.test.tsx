@@ -1,7 +1,7 @@
 /** @format */
 
 import { render, screen } from "@testing-library/react";
-import Countries from "../screens/Countries";
+import Countries from "../Countries";
 
 jest.mock("react-router-dom", () => {
 	return {

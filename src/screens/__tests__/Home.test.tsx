@@ -1,7 +1,7 @@
 /** @format */
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import Home from "../screens/Home";
+import Home from "../Home";
 
 jest.mock("react-router-dom", () => {
 	return {
