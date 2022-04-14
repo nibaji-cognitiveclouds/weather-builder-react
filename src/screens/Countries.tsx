@@ -14,13 +14,13 @@ import {
 	TableRow,
 	Typography,
 } from "@mui/material";
-import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { muiStyles, styles } from "../styles/screens";
 import { countryType, weatherType } from "../types/responses";
 import { LocationStateType } from "../types/router";
+import { getCountryData, getWeather } from "../utils/apiCalls";
 
 const Countries: FC = () => {
 	const [countriesData, setCountriesData] = useState<countryType[]>();
@@ -37,30 +37,13 @@ const Countries: FC = () => {
 	const { country } = location?.state as LocationStateType;
 
 	useEffect(() => {
-		getCountryData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	function getCountryData() {
 		setCountryLoading(true);
-		axios //@ts-ignore
-			.get(`https://restcountries.com/v3.1/name/${country}`)
-			.then((res) => setCountriesData(res.data))
+		getCountryData(country)
+			.then((data) => setCountriesData(data))
 			.catch(() => setCountryError(true))
 			.finally(() => setCountryLoading(false));
-	}
-
-	function getWeather(capital: string) {
-		setWeatherLoading(true);
-		setShowModal(true);
-		axios
-			.get(
-				`http://api.weatherstack.com/current?access_key=9cfe09f6522f28c80de18d51c2880bf4&query=${capital}`
-			)
-			.then((res) => setWeatherData(res.data))
-			.catch(() => setWeatherError(true))
-			.finally(() => setWeatherLoading(false));
-	}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<Container style={styles.container2}>
@@ -233,7 +216,14 @@ const Countries: FC = () => {
 								<Button
 									style={styles.weatherBtn}
 									onClick={() => {
-										getWeather(capital?.[0]);
+										setWeatherLoading(true);
+										setShowModal(true);
+										getWeather(capital?.[0])
+											.then((data) => {
+												setWeatherData(data);
+											})
+											.catch(() => setWeatherError(true))
+											.finally(() => setWeatherLoading(false));
 									}}
 								>
 									Capital Weather
