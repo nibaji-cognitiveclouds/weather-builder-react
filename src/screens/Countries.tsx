@@ -48,12 +48,20 @@ const Countries: FC = () => {
 	return (
 		<Container style={styles.container2}>
 			<div style={{ margin: 20 }}>
-				<Button style={styles.backBtn} onClick={() => window.history.back()}>
+				<Button
+					data-testid={"backButton"}
+					style={styles.backBtn}
+					onClick={() => window.history.back()}
+				>
 					{"< Back"}
 				</Button>
 			</div>
 
-			<Modal open={showModal} onClose={() => setShowModal(false)}>
+			<Modal
+				data-testid={"weatherModal"}
+				open={showModal}
+				onClose={() => setShowModal(false)}
+			>
 				<Box sx={muiStyles.modal}>
 					{weatherLoading ? (
 						<CircularProgress />
@@ -114,9 +122,12 @@ const Countries: FC = () => {
 				</Box>
 			</Modal>
 
-			<Container style={styles.container2}>
+			<Container data-testid={"countriesList"} style={styles.container2}>
 				{countryLoading ? (
-					<CircularProgress style={styles.progressAndError} />
+					<CircularProgress
+						data-testid={"countriesProgress"}
+						style={styles.progressAndError}
+					/>
 				) : countryError ? (
 					<Typography style={styles.progressAndError}>
 						Something Went wrong. Go back and enter proper country name!
@@ -214,6 +225,7 @@ const Countries: FC = () => {
 								</Table>
 
 								<Button
+									data-testid={"weatherButton"}
 									style={styles.weatherBtn}
 									onClick={() => {
 										setWeatherLoading(true);

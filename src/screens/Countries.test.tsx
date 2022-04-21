@@ -8,7 +8,7 @@ jest.mock("react-router-dom", () => {
 		useLocation: () => {
 			return {
 				state: {
-					country: "ind",
+					country: "india",
 				},
 			};
 		},
@@ -16,6 +16,8 @@ jest.mock("react-router-dom", () => {
 });
 
 describe("Countries", () => {
+	jest.setTimeout(10000);
+
 	it("renders", () => {
 		render(<Countries />);
 	});
@@ -25,9 +27,29 @@ describe("Countries", () => {
 		expect(view).toMatchSnapshot();
 	});
 
-	it("has button enabled", () => {
+	it("has the back button", async () => {
 		render(<Countries />);
-		const weatherButton = screen.getByRole("button");
-		expect(weatherButton).not.toBeDisabled();
+		const backButton = await screen.findByTestId("backButton");
+		backButton.click();
+		expect(backButton).toBeInTheDocument();
+	});
+
+	it("has progress circle shown", () => {
+		render(<Countries />);
+		const progress = screen.getByTestId("countriesProgress");
+		expect(progress).toBeInTheDocument();
+	});
+
+	it("has countries list", async () => {
+		render(<Countries />);
+		await new Promise((r) => setTimeout(r, 5000));
+		const countriesList = screen.getByTestId("countriesList");
+		expect(countriesList).toBeInTheDocument();
+
+		const weatherButton = screen.getByTestId("weatherButton");
+		weatherButton.click();
+		await new Promise((r) => setTimeout(r, 4000));
+		const weatherModal = screen.getByTestId("weatherModal");
+		expect(weatherModal).toBeInTheDocument();
 	});
 });

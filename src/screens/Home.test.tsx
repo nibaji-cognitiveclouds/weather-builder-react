@@ -22,6 +22,7 @@ describe("Home", () => {
 	it("has button disabled", () => {
 		render(<Home />);
 		const submitButton = screen.getByRole("button");
+		fireEvent.click(submitButton);
 		expect(submitButton).toBeDisabled();
 	});
 

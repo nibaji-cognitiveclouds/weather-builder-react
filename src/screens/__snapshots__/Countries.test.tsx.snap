@@ -14,6 +14,7 @@ Object {
         >
           <button
             class="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root  css-1e6y48t-MuiButtonBase-root-MuiButton-root"
+            data-testid="backButton"
             style="top: 10px; left: 10px; position: absolute;"
             tabindex="0"
             type="button"
@@ -26,10 +27,12 @@ Object {
         </div>
         <div
           class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+          data-testid="countriesList"
           style="padding: 10px; align-items: center; height: 768px; flex-direction: column; display: flex;"
         >
           <span
             class="MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"
+            data-testid="countriesProgress"
             role="progressbar"
             style="width: 40px; height: 40px; position: absolute; top: 50%; bottom: 50%; text-align: center;"
           >
@@ -61,6 +64,7 @@ Object {
       >
         <button
           class="MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root  css-1e6y48t-MuiButtonBase-root-MuiButton-root"
+          data-testid="backButton"
           style="top: 10px; left: 10px; position: absolute;"
           tabindex="0"
           type="button"
@@ -73,10 +77,12 @@ Object {
       </div>
       <div
         class="MuiContainer-root MuiContainer-maxWidthLg css-1oqqzyl-MuiContainer-root"
+        data-testid="countriesList"
         style="padding: 10px; align-items: center; height: 768px; flex-direction: column; display: flex;"
       >
         <span
           class="MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"
+          data-testid="countriesProgress"
           role="progressbar"
           style="width: 40px; height: 40px; position: absolute; top: 50%; bottom: 50%; text-align: center;"
         >
